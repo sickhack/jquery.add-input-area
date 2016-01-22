@@ -197,7 +197,11 @@ $.extend(AddInputArea.prototype, /** @lends AddInputArea.prototype */ {
    */
   _changeAttrAlongFormat: function(obj, idx, type) {
     var changed = null;
-    if (/^.+_\d+$/.test($(obj).attr(type))) {
+    // formatが指定されていなければ命名規則に従う
+    if (!(type == 'name' && $(obj).attr('name_format'))
+        && !(type == 'id' && $(obj).attr('id_format'))
+        && !(type == 'for' && $(obj).attr('id_format'))
+        && /^.+_\d+$/.test($(obj).attr(type))) {
       changed =  $(obj).attr(type).replace(/^(.+_)\d+$/, '$1' + idx);
     } else {
       // 命名規則に従っていないのに"name_format"や"id_format"を設定していないと例外を投げる
@@ -221,7 +225,7 @@ $.extend(AddInputArea.prototype, /** @lends AddInputArea.prototype */ {
             } else if ($(obj).attr('id')) { // そもそもid属性が存在しない場合を除く
               throw new Error(
                 '(jquery.addInputArea)\n' +
-                'Not found "name_format" attribute in\n' +
+                'Not found "id_format" attribute in\n' +
                 '<' + $(obj)[0].tagName + ' ' + type + '="' + $(obj).attr(type) + '">'
               );
             }
@@ -233,7 +237,7 @@ $.extend(AddInputArea.prototype, /** @lends AddInputArea.prototype */ {
             } else {
               throw new Error(
                 '(jquery.addInputArea)\n' +
-                'Not found "name_format" attribute in\n' +
+                'Not found "id_format" attribute in\n' +
                 '<' + $(obj)[0].tagName + ' ' + type + '="' + $(obj).attr(type) + '">'
               );
             }
